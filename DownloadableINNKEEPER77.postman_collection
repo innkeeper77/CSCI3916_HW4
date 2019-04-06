@@ -1,0 +1,356 @@
+{
+	"info": {
+		"_postman_id": "34f0aaa8-7705-4acd-84e8-bb2530216567",
+		"name": "CSCI-3916-HW3-inkeeper77",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "signup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "innkeeper",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "innkeeper77",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "itsaterriblepassword",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://csci3916-hw3-innkeeper77.herokuapp.com/signup",
+					"protocol": "https",
+					"host": [
+						"csci3916-hw3-innkeeper77",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"signup"
+					]
+				},
+				"description": "Test user signup"
+			},
+			"response": []
+		},
+		{
+			"name": "signin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bd2ca5ab-2f1d-483d-98b1-3cf6ed1cbaaf",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set(\"signin_token\", jsonData.token);",
+							"tests['Signin succeeded'] = jsonData.success === true;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "innkeeper77",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "itsaterriblepassword",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://csci3916-hw3-innkeeper77.herokuapp.com/signin",
+					"protocol": "https",
+					"host": [
+						"csci3916-hw3-innkeeper77",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "movies (Create)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bd2ca5ab-2f1d-483d-98b1-3cf6ed1cbaaf",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{signin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"primer\",\n\t\"year\": \"2004\",\n\t\"genre\": \"Mystery\",\n\t\"actors\": [ { \"ActorName\": \"Shane Carruth\", \"ActorCharacter\": \"Aaron\" },\n\t\t\t  { \"ActorName\": \"David Sullivan\", \"ActorCharacter\": \"Abe\" },\n\t\t\t  { \"ActorName\": \"Casey Gooden\", \"ActorCharacter\": \"Robert\" }\n\t\t\t  ]\n}"
+				},
+				"url": {
+					"raw": "https://csci3916-hw3-innkeeper77.herokuapp.com/movies",
+					"protocol": "https",
+					"host": [
+						"csci3916-hw3-innkeeper77",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "movies (Create ERROR)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bd2ca5ab-2f1d-483d-98b1-3cf6ed1cbaaf",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{signin_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"Primer\",\n\t\"year\": \"2004\",\n\t\"genre\": \"Mystery\",\n\t\"actors\": { \"ActorName\": \"Shane Carruth\", \"ActorCharacter\": \"Aaron\" },\n\t\t\t  { \"ActorName\": \"David Sullivan\", \"ActorCharacter\": \"Abe\" },\n\t\t\t  { \"ActorName\": \"Casey Gooden\", \"ActorCharacter\": \"Robert\" }\n}"
+				},
+				"url": {
+					"raw": "https://csci3916-hw3-innkeeper77.herokuapp.com/movies",
+					"protocol": "https",
+					"host": [
+						"csci3916-hw3-innkeeper77",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "movies (Update)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bd2ca5ab-2f1d-483d-98b1-3cf6ed1cbaaf",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{signin_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"findMovie\": { \"title\": \"primer\" },\n\t\"updateMovieTo\": { \"title\": \"Primer\" }\n}"
+				},
+				"url": {
+					"raw": "https://csci3916-hw3-innkeeper77.herokuapp.com/movies",
+					"protocol": "https",
+					"host": [
+						"csci3916-hw3-innkeeper77",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "movies (Get)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bd2ca5ab-2f1d-483d-98b1-3cf6ed1cbaaf",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{signin_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"Primer\"\n}"
+				},
+				"url": {
+					"raw": "https://csci3916-hw3-innkeeper77.herokuapp.com/movies",
+					"protocol": "https",
+					"host": [
+						"csci3916-hw3-innkeeper77",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "movies (Delete \"Primer\")",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bd2ca5ab-2f1d-483d-98b1-3cf6ed1cbaaf",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{signin_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"Primer\"\n}"
+				},
+				"url": {
+					"raw": "https://csci3916-hw3-innkeeper77.herokuapp.com/movies",
+					"protocol": "https",
+					"host": [
+						"csci3916-hw3-innkeeper77",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
