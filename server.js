@@ -227,9 +227,17 @@ router.route('/reviews')
         {
             return res.status(403).json({success: false, message: "Empty query"});
         }
-        else if(!req.body.quote || !req.body.rating)
+        else if(!req.body.quote)
+        {
+            return res.status(403).json({success: false, message: "Incomplete query 0"});
+        }
+        else if(!req.body.rating)
         {
             return res.status(403).json({success: false, message: "Incomplete query 1"});
+        }
+        else if(!req.body.quote || !req.body.rating)
+        {
+            return res.status(403).json({success: false, message: "Incomplete query 2"});
         }
         else if (!req.body.movie_id|| req.body.movie_id === 0)
         {
