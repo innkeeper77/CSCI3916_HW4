@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "34f0aaa8-7705-4acd-84e8-bb2530216567",
-		"name": "CSCI-3916-HW3-inkeeper77",
+		"_postman_id": "67abc5cc-f1bc-4ca5-946d-94db289dab3e",
+		"name": "CSCI-3916-HW4-inkeeper77",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -38,10 +38,10 @@
 					]
 				},
 				"url": {
-					"raw": "https://csci3916-hw3-innkeeper77.herokuapp.com/signup",
+					"raw": "https://csci3916-hw4-innkeeper77.herokuapp.com/signup",
 					"protocol": "https",
 					"host": [
-						"csci3916-hw3-innkeeper77",
+						"csci3916-hw4-innkeeper77",
 						"herokuapp",
 						"com"
 					],
@@ -95,10 +95,10 @@
 					]
 				},
 				"url": {
-					"raw": "https://csci3916-hw3-innkeeper77.herokuapp.com/signin",
+					"raw": "https://csci3916-hw4-innkeeper77.herokuapp.com/signin",
 					"protocol": "https",
 					"host": [
-						"csci3916-hw3-innkeeper77",
+						"csci3916-hw4-innkeeper77",
 						"herokuapp",
 						"com"
 					],
@@ -143,10 +143,10 @@
 					"raw": "{\n\t\"title\": \"primer\",\n\t\"year\": \"2004\",\n\t\"genre\": \"Mystery\",\n\t\"actors\": [ { \"ActorName\": \"Shane Carruth\", \"ActorCharacter\": \"Aaron\" },\n\t\t\t  { \"ActorName\": \"David Sullivan\", \"ActorCharacter\": \"Abe\" },\n\t\t\t  { \"ActorName\": \"Casey Gooden\", \"ActorCharacter\": \"Robert\" }\n\t\t\t  ]\n}"
 				},
 				"url": {
-					"raw": "https://csci3916-hw3-innkeeper77.herokuapp.com/movies",
+					"raw": "https://csci3916-hw4-innkeeper77.herokuapp.com/movies",
 					"protocol": "https",
 					"host": [
-						"csci3916-hw3-innkeeper77",
+						"csci3916-hw4-innkeeper77",
 						"herokuapp",
 						"com"
 					],
@@ -191,10 +191,10 @@
 					"raw": "{\n\t\"title\": \"Primer\",\n\t\"year\": \"2004\",\n\t\"genre\": \"Mystery\",\n\t\"actors\": { \"ActorName\": \"Shane Carruth\", \"ActorCharacter\": \"Aaron\" },\n\t\t\t  { \"ActorName\": \"David Sullivan\", \"ActorCharacter\": \"Abe\" },\n\t\t\t  { \"ActorName\": \"Casey Gooden\", \"ActorCharacter\": \"Robert\" }\n}"
 				},
 				"url": {
-					"raw": "https://csci3916-hw3-innkeeper77.herokuapp.com/movies",
+					"raw": "https://csci3916-hw4-innkeeper77.herokuapp.com/movies",
 					"protocol": "https",
 					"host": [
-						"csci3916-hw3-innkeeper77",
+						"csci3916-hw4-innkeeper77",
 						"herokuapp",
 						"com"
 					],
@@ -239,10 +239,10 @@
 					"raw": "{\n\t\"findMovie\": { \"title\": \"primer\" },\n\t\"updateMovieTo\": { \"title\": \"Primer\" }\n}"
 				},
 				"url": {
-					"raw": "https://csci3916-hw3-innkeeper77.herokuapp.com/movies",
+					"raw": "https://csci3916-hw4-innkeeper77.herokuapp.com/movies",
 					"protocol": "https",
 					"host": [
-						"csci3916-hw3-innkeeper77",
+						"csci3916-hw4-innkeeper77",
 						"herokuapp",
 						"com"
 					],
@@ -290,10 +290,10 @@
 					"raw": "{\n\t\"title\": \"Primer\"\n}"
 				},
 				"url": {
-					"raw": "https://csci3916-hw3-innkeeper77.herokuapp.com/movies",
+					"raw": "https://csci3916-hw4-innkeeper77.herokuapp.com/movies",
 					"protocol": "https",
 					"host": [
-						"csci3916-hw3-innkeeper77",
+						"csci3916-hw4-innkeeper77",
 						"herokuapp",
 						"com"
 					],
@@ -338,15 +338,50 @@
 					"raw": "{\n\t\"title\": \"Primer\"\n}"
 				},
 				"url": {
-					"raw": "https://csci3916-hw3-innkeeper77.herokuapp.com/movies",
+					"raw": "https://csci3916-hw4-innkeeper77.herokuapp.com/movies",
 					"protocol": "https",
 					"host": [
-						"csci3916-hw3-innkeeper77",
+						"csci3916-hw4-innkeeper77",
 						"herokuapp",
 						"com"
 					],
 					"path": [
 						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "reviews (Create)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{signin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"primer\",\n\t\"year\": \"2004\",\n\t\"genre\": \"Mystery\",\n\t\"actors\": [ { \"ActorName\": \"Shane Carruth\", \"ActorCharacter\": \"Aaron\" },\n\t\t\t  { \"ActorName\": \"David Sullivan\", \"ActorCharacter\": \"Abe\" },\n\t\t\t  { \"ActorName\": \"Casey Gooden\", \"ActorCharacter\": \"Robert\" }\n\t\t\t  ]\n}"
+				},
+				"url": {
+					"raw": "https://csci3916-hw4-innkeeper77.herokuapp.com/reviews",
+					"protocol": "https",
+					"host": [
+						"csci3916-hw4-innkeeper77",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"reviews"
 					]
 				}
 			},
