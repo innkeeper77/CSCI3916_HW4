@@ -229,7 +229,7 @@ router.route('/reviews')
         }
         else if(!req.body.quote || !req.body.rating)
         {
-            return res.status(403).json({success: false, message: "Incomplete query"});
+            return res.status(403).json({success: false, message: "Incomplete query 1"});
         }
         else if (!req.body.movie_id|| req.body.movie_id === 0)
         {
