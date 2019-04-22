@@ -220,6 +220,75 @@ router.route('/movies')
     }
     );
 
+router.route('/reviews')
+    .post(authJwtController.isAuthenticated, function (req, res) // Post: create a new review entry for existing movie
+    {
+        if(!req.body)
+        {
+            return res.status(403).json({success: false, message: "Empty query"});
+        }
+        else if(!req.body.quote || !req.body.rating)
+        {
+            return res.status(403).json({success: false, message: "Incomplete query"});
+        }
+        else if (!req.body.movie_id|| req.body.movie_id === 0)
+        {
+            return res.status(403).json({success: false, message: "Invalid movie_id"});
+        }
+        else if (!req.body.author_id || req.body.author_id === 0)
+        {
+            return res.status(403).json({success: false, message: "Invalid author_id"});
+        }
+        else
+        {
+            var review = new Review();
+            review.quote = req.body.quote
+            review.rating = req.body.rating
+            review.author_id = req.body.author_id
+            review.movie_id = req.body.movie_id
+
+            jwt.verify(req.headers.authorization.substring(4), process.env.SECRET_KEY, function(err, decoded)
+            {
+                if(err)
+                {
+                    return res.status(403).json({success: false, message: "Invalid authorization?"});
+                }
+                else
+                {
+                    review.reviewer_id = decoded.id;
+
+                    Movie.findOne({title: req.body.movie_title}, function(err, movie) //Copied and modified from user section
+                    {
+                        if(err)
+                        {
+                            return res.status(403).json({success: false, message: "Error: dev doesn't know what went wrong"});
+                        }
+                        if (!movie)
+                        {
+                            return res.status(403).json({success: false, message: "Error: movie not found"});
+                        }
+                        else
+                        {
+                            review.save(function(err)
+                            {
+                                if(err)
+                                {
+                                    return res.status(403).json({success: false, message: "Error: dev doesn't know what went wrong"});
+                                }
+                                else
+                                {
+                                    return res.status(200).send({success: true, message: "Review added"});
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+    });
+
+
 router.route('/')
     .all(function (req, res)
         {
