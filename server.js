@@ -248,7 +248,7 @@ router.route('/reviews')
                 else
                 {
                     review.author_id = decoded.id //Set author ID to user ID (This is NOT the username)
-                    Movie.findOne({title: req.body.movie}, function(err, movie) //Finds movie by title, NOT by ID.
+                    Movie.findOne({title: req.body.movie_title}, function(err, movie) //Finds movie by title, NOT by ID.
                     {
                         if(err)
                         {
@@ -263,7 +263,7 @@ router.route('/reviews')
                             review.movie_id = movie._id;
                             review.quote = req.body.quote;
                             review.rating = req.body.rating;
-                            review.author_id = decoded._id;
+                            //review.author_id = decoded._id; //Duplicate?
                             review.username = decoded.username;
 
                             review.save(function(err)
