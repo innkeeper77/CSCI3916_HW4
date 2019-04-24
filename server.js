@@ -245,17 +245,17 @@ router.route('/reviews')
                 }
                 else
                 {
-                    //review.author_id = decoded.id;
+                    review.author_id = decoded.id;
 
-                    movie.findOne({title: req.body.movie_title}, function(err, movie) //Copied and modified from user section
+                    Movie.findOne({title: req.body.movie_title}, function(err, movie) //Copied and modified from user section
                     {
                         if(err)
                         {
-                            return res.status(403).json({success: false, message: "Error: dev doesn't know what went wrong" + JSON.stringify(err) });
+                            return res.status(403).json({success: false, message: "Error: dev doesn't know what went wrong" });
                         }
                         if (!movie)
                         {
-                            return res.status(403).json({success: false, message: "Error: movie not found" + JSON.stringify(req.body.movie_title) });
+                            return res.status(403).json({success: false, message: "Error: movie not found"});
                         }
                         else
                         {
