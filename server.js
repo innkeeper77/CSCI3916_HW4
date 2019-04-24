@@ -169,13 +169,13 @@ router.route('/movies')
                     }
                 })
             }
-            else if (req.query && req.query.reviews && req.query.reviews === "true")
+            else if (req.query && ( req.query.reviews !== undefined && req.query.reviews === "true") )
             {
                 return res.status(405).json({success: false, message: "Movie get with reviews is not yet implemented", movie: movie});
             }
             else
             {
-                return res.status(403).json({success: false, message: "Invalid request: " + JSON.stringify(req.body) });
+                return res.status(403).json({success: false, message: "Invalid request: " + JSON.stringify(req.body), movie: movie });
             }
         }
     })
