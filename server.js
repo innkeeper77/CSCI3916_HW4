@@ -247,7 +247,7 @@ router.route('/reviews')
                 {
                     //review.author_id = decoded.id;
 
-                    Movie.findOne({title: req.body.movie_title}, function(err, movie) //Copied and modified from user section
+                    movie.findOne({title: req.body.movie_title}, function(err, movie) //Copied and modified from user section
                     {
                         if(err)
                         {
