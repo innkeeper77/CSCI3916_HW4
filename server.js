@@ -245,28 +245,24 @@ router.route('/reviews')
                 }
                 else
                 {
-                    review.user_id = decoded.id;
+                    //review.author_id = decoded.id;
 
                     Movie.findById(req.body.movie, function(err, movie)
                     {
                         if(err)
                         {
-                            if (err.code === 11000)
-                            {
-                                return res.status(403).json(
-                                    {
-                                        success: false, message: "Cannot post multiple reviews of one movie"
-                                    });
-                            }
-                            else { return res.status(403).json(err); }
+                            return res.status(403).json(err);
+                        }
                         if (!movie)
                         {
                             return res.status(403).json({success: false, message: "Error: movie not found"});
                         }
                         else
+                        {
                             review.movie = movie._id;
                             review.quote = req.body.quote;
                             review.rating = req.body.rating;
+                            review.author_id = decoded._id;
 
                             review.save(function(err)
                             {
@@ -280,7 +276,7 @@ router.route('/reviews')
                                 }
                             })
                         }
-                    });
+                    })
                 }
             })
         }
