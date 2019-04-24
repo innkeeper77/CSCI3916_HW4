@@ -247,11 +247,12 @@ router.route('/reviews')
                 {
                     review.author_id = decoded.id;
 
-                    Movie.findOne({title: req.body.movie_title}, function(err, movie) //Copied and modified from user section
+                    var idMovie = req.body.movie_title;
+                    Movie.findById(idMovie, function(err, movie)
                     {
                         if(err)
                         {
-                            return res.status(403).json({success: false, message: "Error: dev doesn't know what went wrong in Movie.findOne" });
+                            return res.status(403).json(err);
                         }
                         if (!movie)
                         {
