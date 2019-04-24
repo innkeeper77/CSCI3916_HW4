@@ -5,6 +5,7 @@ var authJwtController = require('./auth_jwt');
 var User = require('./Users');
 var Movie = require('./Movies');
 var jwt = require('jsonwebtoken');
+var Review = require('./Reviews');
 
 var app = express();
 module.exports = app; // for testing
@@ -235,14 +236,6 @@ router.route('/reviews')
         {
             return res.status(403).json({success: false, message: "Incomplete query 1"});
         }
-        else if(!req.body.quote || !req.body.rating)
-        {
-            return res.status(403).json({success: false, message: "Incomplete query 2"});
-        }
-        //else if (!req.body.movie_id|| req.body.movie_id === 0)
-        //{
-        //    return res.status(403).json({success: false, message: "Invalid movie_id"});
-        //}
         else
         {
             var review = new Review();
