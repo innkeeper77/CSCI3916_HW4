@@ -173,7 +173,7 @@ router.route('/movies')
             {
                 Movie.aggregate()
                     .match(req.body)
-                    .lookup({from: 'reviews', localField: '_id', foreignField: 'movie', as: 'reviews'})
+                    .lookup({from: 'reviews', localField: '_id', foreignField: 'movie_id', as: 'reviews'})
                     .exec(function(err, movie)
                     {
                         if(err)
