@@ -1,0 +1,3 @@
+Security notes:
+
+LEAVING passport version with vulterability in order to determine if if was causing issues before

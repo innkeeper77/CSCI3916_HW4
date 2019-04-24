@@ -216,15 +216,81 @@ router.route('/movies')
     .all(function (req, res)
     {
         console.log(req.body);
-        res.status(405).send({success: false, message: 'Invalid method.'});
-    }
-    );
+        res = res.status(405);
+        res.send("HTTP method not implemented");
+    });
+
+router.route('/reviews')
+    .post(authJwtController.isAuthenticated, function (req, res) // Post: create a new movie entry
+    {
+        if(!req.body)
+        {
+            return res.status(403).json({success: false, message: "Empty query"});
+        }
+        else if(!req.body.quote || !req.body.rating)
+        {
+            return res.status(403).json({success: false, message: "Incomplete query A"});
+        }
+        else
+        {
+            var review = new Review();
+            jwt.verify(req.headers.authorization.substring(4), process.env.SECRET_KEY, function(err, decoded)
+            {
+                if(err)
+                {
+                    return res.status(403).json(err);
+                }
+                else
+                {
+                    review.author_id = decoded.id //Set author ID to user ID (This is NOT the username)
+                    Movie.findOne({title: req.body.movie}, function(err, movie) //Finds movie by title, NOT by ID.
+                    {
+                        if(err)
+                        {
+                            return res.status(403).json(err);
+                        }
+                        else if(!movie) //"movie" is from function(err, movie) return
+                        {
+                            return res.status(403).json({success: false, message: "Error: movie not found"});
+                        }
+                        else //No error and a movie was returned
+                        {
+                            review.movie_id = movie._id;
+                            review.quote = req.body.quote;
+                            review.rating = req.body.rating;
+                            review.author_id = decoded._id;
+                            review.username = decoded.username;
+
+                            review.save(function(err)
+                            {
+                                if(err)
+                                {
+                                    return res.status(403).json(err);
+                                }
+                                else
+                                {
+                                    return res.status(200).send({success: true, message: "Review added"});
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    })
+    .all(function (req, res)
+    {
+        console.log(req.body);
+        res = res.status(405);
+        res.send("HTTP method not implemented");
+    });
+
 
 router.route('/')
     .all(function (req, res)
         {
             console.log(req.body);
-            res.status(403).send({success: false, message: 'Root directory: Unauthorized'});
+            res.status(403).send({success: false, message: 'Root directory: Unauthorized and not implemented'});
         }
     );
 

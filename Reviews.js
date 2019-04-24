@@ -9,10 +9,12 @@ mongoose.set('useCreateIndex', true);
 
 // user schema
 var ReviewSchema = new Schema({
-    author_id: { type: Schema.Types.ObjectId, ref: "UserSchema", required: true }, //username of reviewer
-    movie: { type: Schema.Types.ObjectId, ref: "MovieSchema", required: true },
+    author_id: { type: Schema.Types.ObjectId, ref: "UserSchema", required: true }, //ID- not username- of reviewer
+    username: { type: String},
+    movie_id: { type: Schema.Types.ObjectId, ref: "MovieSchema", required: true }, //Again, ID, not title etc
+    movie: { type: String}, //Needed? I don't know, it seems like bad design but it prevented errors in webstorm
     rating: { type: Number, min: 0, max: 5, required: true},
-    quote: { type: String },
+    quote: { type: String }
 });
 
 ReviewSchema.pre('save', function(next) {
