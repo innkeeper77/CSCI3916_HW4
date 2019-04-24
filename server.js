@@ -262,7 +262,7 @@ router.route('/reviews')
                             review.movie = movie._id;
                             review.quote = req.body.quote;
                             review.rating = req.body.rating;
-                            review.author_id = decoded.author_id;
+                            review.author_id = decoded._id;
 
                             review.save(function(err)
                             {
