@@ -1,3 +1,6 @@
 Security notes:
 
 LEAVING passport version with vulterability in order to determine if if was causing issues before
+
+ISSUES:
+1. Users can post multiple reviews, which isn't right, but is udeful for testing
