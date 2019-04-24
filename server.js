@@ -228,24 +228,13 @@ router.route('/reviews')
         {
             return res.status(403).json({success: false, message: "Empty query"});
         }
-        else if(!req.body.quote)
-        {
-            return res.status(403).json({success: false, message: "Incomplete query 0"});
-        }
-        else if(!req.body.rating)
-        {
-            return res.status(403).json({success: false, message: "Incomplete query 1"});
-        }
         else if(!req.body.quote || !req.body.rating)
         {
-            return res.status(403).json({success: false, message: "Incomplete query 2"});
+            return res.status(403).json({success: false, message: "Incomplete query B"});
         }
-        //else if (!req.body.movie_id|| req.body.movie_id === 0)
-        //{
-        //    return res.status(403).json({success: false, message: "Invalid movie_id"});
-        //}
         else
         {
+            var review = new Review();
             jwt.verify(req.headers.authorization.substring(4), process.env.SECRET_KEY, function(err, decoded)
             {
                 if(err)
@@ -268,7 +257,7 @@ router.route('/reviews')
                         }
                         else
                         {
-                            var review = new Review();
+
                             review.quote = req.body.quote
                             review.rating = req.body.rating
                             review.author_id = decoded.author_id
