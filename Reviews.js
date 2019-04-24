@@ -11,7 +11,7 @@ mongoose.set('useCreateIndex', true);
 // user schema
 var ReviewSchema = new Schema({
     author_id: { type: Schema.Types.ObjectId, ref: "UserSchema", required: true }, //username of reviewer
-    movie_id: { type: Schema.Types.ObjectId, ref: "MovieSchema", required: true },
+    movie: { type: Schema.Types.ObjectId, ref: "MovieSchema", required: true },
     rating: { type: Number, min: 0, max: 5, required: true},
     quote: { type: String },
 });

@@ -239,10 +239,10 @@ router.route('/reviews')
         {
             return res.status(403).json({success: false, message: "Incomplete query 2"});
         }
-        else if (!req.body.movie_id|| req.body.movie_id === 0)
-        {
-            return res.status(403).json({success: false, message: "Invalid movie_id"});
-        }
+        //else if (!req.body.movie_id|| req.body.movie_id === 0)
+        //{
+        //    return res.status(403).json({success: false, message: "Invalid movie_id"});
+        //}
         else
         {
             jwt.verify(req.headers.authorization.substring(4), process.env.SECRET_KEY, function(err, decoded)
@@ -272,7 +272,7 @@ router.route('/reviews')
                             review.rating = req.body.rating
                             review.author_id = decoded.author_id
                             // review.movie_id = req.body.movie_id //Nope, find it just like we did with the users
-                            review.movie_id = movie._id
+                            review.movie = movie._id
 
                             review.save(function(err)
                             {
