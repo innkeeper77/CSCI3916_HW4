@@ -221,77 +221,58 @@ router.route('/movies')
     );
 
 router.route('/reviews')
-    .post(authJwtController.isAuthenticated, function (req, res) // Post: create a new review entry for existing movie
+    .post(authJwtController.isAuthenticated, function(req, res)
     {
-        if(!req.body)
+        if(!req.body.quote || !req.body.rating)
         {
-            return res.status(403).json({success: false, message: "Empty query"});
+            return res.json({success: false, message: "Error: make sure all fields correctly filled/formatted." + JSON.stringify(req.body)});
         }
-        else if(!req.body.quote)
-        {
-            return res.status(403).json({success: false, message: "Incomplete query 0"});
-        }
-        else if(!req.body.rating)
-        {
-            return res.status(403).json({success: false, message: "Incomplete query 1"});
-        }
-        else if(!req.body.quote || !req.body.rating)
-        {
-            return res.status(403).json({success: false, message: "Incomplete query 2"});
-        }
-        //else if (!req.body.movie_id|| req.body.movie_id === 0)
-        //{
-        //    return res.status(403).json({success: false, message: "Invalid movie_id"});
-        //}
         else
         {
-            jwt.verify(req.headers.authorization.substring(4), process.env.SECRET_KEY, function(err, decoded)
-            {
+            var review = new Review();
+            //gets authorization from headers and removes first 4 characters (JWT ) so you just have the token
+            jwt.verify(req.headers.authorization.substring(4), process.env.SECRET_KEY, function(err, decoded) {
                 if(err)
                 {
-                    return res.status(403).json({success: false, message: "Invalid authorization? Or other error."});
+                    return res.status(403).json({success: false, message: "Error: unable to post review."});
                 }
                 else
                 {
-                    review.author_id = decoded.id;
+                    review.reviewer_id = decoded.id;
 
-                    Movie.findOne({title: req.body.movie_title}, function(err, movie) //Copied and modified from user section
-                    {
+                    Movie.findOne({title: req.body.movie_title}, function(err, movie) {
                         if(err)
                         {
-                            return res.status(403).json({success: false, message: "Error: dev doesn't know what went wrong"});
+                            return res.status(403).json({success: false, message: "Error: unable to post review."});
                         }
-                        if (!movie)
+                        else if(!movie)
                         {
-                            return res.status(403).json({success: false, message: "Error: movie not found"});
+                            return res.status(403).json({success: false, message: "Error: unable to post review, movie does not exist."});
                         }
                         else
                         {
-                            var review = new Review();
-                            review.quote = req.body.quote
-                            review.rating = req.body.rating
-                            review.author_id = decoded.author_id
-                            // review.movie_id = req.body.movie_id //Nope, find it just like we did with the users
-                            review.movie = movie._id
+                            review.movie = movie._id;
+                            review.quote = req.body.quote;
+                            review.rating = req.body.rating;
+                            review.username = decoded.username;
 
-                            review.save(function(err)
+                            review.save(function (err)
                             {
                                 if(err)
                                 {
-                                    return res.status(403).json({success: false, message: "Error: dev doesn't know what went wrong"});
+                                    return res.status(403).json({success: false, message: "Error: unable to post review."});
                                 }
-                                else
-                                {
-                                    return res.status(200).send({success: true, message: "Review added"});
+                                else {
+                                    return res.status(200).send({success: true, message: "Success: new review added!"});
                                 }
-                            });
+                            })
                         }
-                    });
+                    })
                 }
-            });
+            })
         }
+    })
 
-    });
 
 
 router.route('/')
