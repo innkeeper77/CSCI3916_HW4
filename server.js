@@ -243,27 +243,17 @@ router.route('/reviews')
         {
             return res.status(403).json({success: false, message: "Invalid movie_id"});
         }
-        else if (!req.body.author_id || req.body.author_id === 0)
-        {
-            return res.status(403).json({success: false, message: "Invalid author_id"});
-        }
         else
         {
-            var review = new Review();
-            review.quote = req.body.quote
-            review.rating = req.body.rating
-            review.author_id = req.body.author_id
-            review.movie_id = req.body.movie_id
-
             jwt.verify(req.headers.authorization.substring(4), process.env.SECRET_KEY, function(err, decoded)
             {
                 if(err)
                 {
-                    return res.status(403).json({success: false, message: "Invalid authorization?"});
+                    return res.status(403).json({success: false, message: "Invalid authorization? Or other error."});
                 }
                 else
                 {
-                    review.reviewer_id = decoded.id;
+                    review.author_id = decoded.id;
 
                     Movie.findOne({title: req.body.movie_title}, function(err, movie) //Copied and modified from user section
                     {
@@ -277,6 +267,13 @@ router.route('/reviews')
                         }
                         else
                         {
+                            var review = new Review();
+                            review.quote = req.body.quote
+                            review.rating = req.body.rating
+                            review.author_id = decoded.author_id
+                            // review.movie_id = req.body.movie_id //Nope, find it just like we did with the users
+                            review.movie_id = movie._id
+
                             review.save(function(err)
                             {
                                 if(err)
