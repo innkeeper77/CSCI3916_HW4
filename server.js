@@ -169,13 +169,22 @@ router.route('/movies')
                     }
                 })
             }
-            else if (req.query && ( req.query.reviews !== undefined && req.query.reviews === "true") )
-            {
-                return res.status(405).json({success: false, message: "Movie get with reviews is not yet implemented", movie: movie});
-            }
             else
             {
-                return res.status(403).json({success: false, message: "Invalid request: " + JSON.stringify(req.body), movie: movie });
+                Movie.aggregate()
+                    .match(req.body)
+                    .lookup({from: 'reviews', localField: '_id', foreignField: 'movie', as: 'reviews'})
+                    .exec(function(err, movie)
+                    {
+                        if(err)
+                        {
+                            return res.status(403).json({success: false, message: "Error: movie with reviews not found."});
+                        }
+                        else
+                        {
+                            return res.status(200).json({success: true, message: "Success: movie with reviews found", movie: movie})
+                        }
+                    })
             }
         }
     })
