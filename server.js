@@ -245,8 +245,7 @@ router.route('/reviews')
                 }
                 else
                 {
-                    review.author_id = decoded._id;
-                    
+
                     Movie.findById(req.body.movie, function(err, movie)
                     {
                         if(err)
@@ -259,7 +258,7 @@ router.route('/reviews')
                         }
                         else
                         {
-
+                            review.author_id = req.body.username;
                             review.movie = movie._id;
                             review.quote = req.body.quote;
                             review.rating = req.body.rating;
