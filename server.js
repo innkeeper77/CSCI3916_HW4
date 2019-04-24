@@ -225,19 +225,19 @@ router.route('/reviews')
     {
         if(!req.body)
         {
-            return res.status(403).json({success: false, message: "Empty query"});
+            return res.status(403).json({success: false, message: "Empty query" + JSON.stringify(req.body)});
         }
         else if(!req.body.quote)
         {
-            return res.status(403).json({success: false, message: "Incomplete query 0"});
+            return res.status(403).json({success: false, message: "Incomplete query 0" + JSON.stringify(req.body)});
         }
         else if(!req.body.rating)
         {
-            return res.status(403).json({success: false, message: "Incomplete query 1"});
+            return res.status(403).json({success: false, message: "Incomplete query 1" + JSON.stringify(req.body)});
         }
         else if(!req.body.quote || !req.body.rating)
         {
-            return res.status(403).json({success: false, message: "Incomplete query 2"});
+            return res.status(403).json({success: false, message: "Incomplete query 2" + JSON.stringify(req.body)});
         }
         //else if (!req.body.movie_id|| req.body.movie_id === 0)
         //{
