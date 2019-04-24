@@ -222,7 +222,7 @@ router.route('/movies')
     );
 
 router.route('/reviews')
-    .post(authJwtController.isAuthenticated, function(req, res)
+    .post(authJwtController.isAuthenticated, function (req, res) // Post: create a new review entry for existing movie
     {
         if(!req.body)
         {
@@ -236,43 +236,54 @@ router.route('/reviews')
         {
             return res.status(403).json({success: false, message: "Incomplete query 1"});
         }
+        else if(!req.body.quote || !req.body.rating)
+        {
+            return res.status(403).json({success: false, message: "Incomplete query 2"});
+        }
+        //else if (!req.body.movie_id|| req.body.movie_id === 0)
+        //{
+        //    return res.status(403).json({success: false, message: "Invalid movie_id"});
+        //}
         else
         {
-            var review = new Review();
-            //gets authorization from headers and removes first 4 characters (JWT ) so you just have the token
-            jwt.verify(req.headers.authorization.substring(4), process.env.SECRET_KEY, function(err, decoded) {
+            jwt.verify(req.headers.authorization.substring(4), process.env.SECRET_KEY, function(err, decoded)
+            {
                 if(err)
                 {
-                    return res.status(403).json({success: false, message: "Error: unable to post review."});
+                    return res.status(403).json({success: false, message: "Invalid authorization? Or other error."});
                 }
                 else
                 {
-                    review.reviewer_id = decoded.id;
+                    review.author_id = decoded.id;
 
-                    Movie.findOne({title: req.body.movie_title}, function(err, movie) {
+                    Movie.findOne({title: req.body.movie_title}, function(err, movie) //Copied and modified from user section
+                    {
                         if(err)
                         {
-                            return res.status(403).json({success: false, message: "Error: unable to post review."});
+                            return res.status(403).json({success: false, message: "Error: dev doesn't know what went wrong"});
                         }
-                        else if(!movie)
+                        if (!movie)
                         {
-                            return res.status(403).json({success: false, message: "Error: unable to post review, movie does not exist."});
+                            return res.status(403).json({success: false, message: "Error: movie not found"});
                         }
                         else
                         {
-                            review.movie = movie._id;
-                            review.quote = req.body.quote;
-                            review.rating = req.body.rating;
-                            review.username = decoded.username;
+                            var review = new Review();
+                            review.quote = req.body.quote
+                            review.rating = req.body.rating
+                            review.author_id = decoded.author_id
+                            // review.movie_id = req.body.movie_id //Nope, find it just like we did with the users
+                            review.movie = movie._id
 
-                            review.save(function (err)
+                            review.save(function(err)
                             {
                                 if(err)
                                 {
-                                    return res.status(403).json({success: false, message: "Error: unable to post review."});
+                                    return res.status(403).json({success: false, message: "Error: dev doesn't know what went wrong"});
                                 }
-                                else {
-                                    return res.status(200).send({success: true, message: "Success: new review added!"});
+                                else
+                                {
+                                    return res.status(200).send({success: true, message: "Review added"});
                                 }
                             })
                         }
