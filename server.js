@@ -251,7 +251,7 @@ router.route('/reviews')
                     {
                         if(err)
                         {
-                            return res.status(403).json({success: false, message: "Error: dev doesn't know what went wrong"});
+                            return res.status(403).json({success: false, message: "Error: dev doesn't know what went wrong" + JSON.stringify(err) });
                         }
                         if (!movie)
                         {
@@ -259,12 +259,10 @@ router.route('/reviews')
                         }
                         else
                         {
-
+                            review.movie = movie._id;
                             review.quote = req.body.quote;
                             review.rating = req.body.rating;
                             review.author_id = decoded.author_id;
-                            // review.movie_id = req.body.movie_id //Nope, find it just like we did with the users
-                            review.movie = movie._id;
 
                             review.save(function(err)
                             {
