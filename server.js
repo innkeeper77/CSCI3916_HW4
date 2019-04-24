@@ -154,18 +154,29 @@ router.route('/movies')
         }
         else
         {
-            Movie.find(req.body).select("title year genre actor").exec(function (err, movie)
+            if (req.query && !req.query.reviews || req.query.reviews === "false") //Regular movie get. Implemented parameter design with gavenos help.
             {
-                if (err) res.send(err);
-                if(movie && movie.length > 0)
+                Movie.find(req.body).select("title year genre actor").exec(function (err, movie)
                 {
-                    return res.status(200).json({success: true, message: "Success: movie found", movie: movie});
-                }
-                else
-                {
-                    return res.status(404).json({success: false, message: "Error: no movie found", movie: movie});
-                }
-            })
+                    if (err) res.send(err);
+                    if(movie && movie.length > 0)
+                    {
+                        return res.status(200).json({success: true, message: "Success: movie found", movie: movie});
+                    }
+                    else
+                    {
+                        return res.status(404).json({success: false, message: "Error: no movie found", movie: movie});
+                    }
+                })
+            }
+            else if (req.query && req.query.reviews || req.query.reviews === "true")
+            {
+                return res.status(405).json({success: false, message: "Movie get with reviews is not yet implemented", movie: movie});
+            }
+            else
+            {
+                return res.status(403).json({success: false, message: "Invalid request: " + JSON.stringify(req.body) });
+            }
         }
     })
     .put(authJwtController.isAuthenticated, function (req, res)
