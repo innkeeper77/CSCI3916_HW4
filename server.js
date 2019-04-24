@@ -8,6 +8,7 @@ var jwt = require('jsonwebtoken');
 var Review = require('./Reviews');
 var cors = require('cors');
 var mongoose = require('mongoose');
+const user = require("mongoose");
 
 var app = express();
 module.exports = app; // for testing
@@ -245,6 +246,12 @@ router.route('/reviews')
                 }
                 else
                 {
+                    user.findById(req.body.username, function(err, user)
+                    {
+                        review.author_id = user._id
+
+                    })
+
 
                     Movie.findById(req.body.movie, function(err, movie)
                     {
@@ -258,7 +265,6 @@ router.route('/reviews')
                         }
                         else
                         {
-                            review.author_id = req.body.username;
                             review.movie = movie._id;
                             review.quote = req.body.quote;
                             review.rating = req.body.rating;
