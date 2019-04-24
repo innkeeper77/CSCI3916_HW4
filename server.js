@@ -247,7 +247,7 @@ router.route('/reviews')
                 {
                     review.author_id = decoded.id;
 
-                    Movie.findOne({title: req.body.movie}, function(err, movie) //Copied and modified from user section
+                    Movie.findOne({title: req.body.movie_title}, function(err, movie) //Copied and modified from user section
                     {
                         if(err)
                         {
@@ -255,7 +255,7 @@ router.route('/reviews')
                         }
                         if (!movie)
                         {
-                            return res.status(403).json({success: false, message: "Error: movie not found"});
+                            return res.status(403).json({success: false, message: "Error: movie not found" + JSON.stringify(req.body.movie_title) });
                         }
                         else
                         {
