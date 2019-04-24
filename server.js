@@ -225,11 +225,11 @@ router.route('/reviews')
     {
         if(!req.body)
         {
-            return res.status(403).json({success: false, message: "Empty query"});
+            return res.status(403).json({success: false, message: "Empty query: " + JSON.stringify(req.body)});
         }
         else if(!req.body.quote || !req.body.rating)
         {
-            return res.status(403).json({success: false, message: "Incomplete query A"});
+            return res.status(403).json({success: false, message: "Incomplete query A: " + JSON.stringify(req.body) });
         }
         else
         {
@@ -251,7 +251,7 @@ router.route('/reviews')
                         }
                         else if(!movie) //"movie" is from function(err, movie) return
                         {
-                            return res.status(403).json({success: false, message: "Error: movie not found"});
+                            return res.status(403).json({success: false, message: "Error: movie not found: " + JSON.stringify(req.body)});
                         }
                         else //No error and a movie was returned
                         {
