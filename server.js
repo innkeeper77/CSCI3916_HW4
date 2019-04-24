@@ -5,16 +5,13 @@ var authJwtController = require('./auth_jwt');
 var User = require('./Users');
 var Movie = require('./Movies');
 var jwt = require('jsonwebtoken');
-var Review = require('./Reviews');
-var cors = require('cors');
-var mongoose = require('mongoose');
 
 var app = express();
 module.exports = app; // for testing
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(passport.initialize());
-app.use(cors());
 
 var router = express.Router();
 
@@ -222,73 +219,6 @@ router.route('/movies')
         res.status(405).send({success: false, message: 'Invalid method.'});
     }
     );
-
-router.route('/reviews')
-    .post(authJwtController.isAuthenticated, function (req, res) // Post: create a new review entry for existing movie
-    {
-        if(!req.body)
-        {
-            return res.status(403).json({success: false, message: "Empty query"});
-        }
-        else if(!req.body.quote || !req.body.rating)
-        {
-            return res.status(403).json({success: false, message: "Incomplete query B"});
-        }
-        else
-        {
-            var review = new Review();
-            jwt.verify(req.headers.authorization.substring(4), process.env.SECRET_KEY, function(err, decoded)
-            {
-                if(err)
-                {
-                    return res.status(403).json({success: false, message: "Invalid authorization? Or other error."});
-                }
-                else
-                {
-                    //review.author_id = decoded.id;
-
-                    Movie.findById(req.body.movie, function(err, movie)
-                    {
-                        if(err)
-                        {
-                            return res.status(403).json(err);
-                        }
-                        if (!movie)
-                        {
-                            return res.status(403).json({success: false, message: "Error: movie not found"});
-                        }
-                        else
-                        {
-                            review.movie = movie._id;
-                            review.quote = req.body.quote;
-                            review.rating = req.body.rating;
-                            review.author_id = decoded._id;
-
-                            review.save(function(err)
-                            {
-                                if(err)
-                                {
-                                    return res.status(403).json(err);
-                                }
-                                else
-                                {
-                                    return res.status(200).send({success: true, message: "Review added"});
-                                }
-                            })
-                        }
-                    })
-                }
-            })
-        }
-    })
-    .all(function (req, res)
-    {
-        console.log(req.body);
-        res = res.status(403);
-        res.send("HTTP method not supported");
-    });
-
-
 
 router.route('/')
     .all(function (req, res)

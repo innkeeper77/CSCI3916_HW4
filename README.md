@@ -1,2 +1,5 @@
-# CSCI3916_HW4
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/a37615b9d4f5d8b78236)
+# week7a
+
+To the grader:
+
+I am sorry, but I STILL cannot get the postman share collection to work properly without pulling in tons of junk deleted collections as well. If you download this repo, a postman collection titled DownloadableINNKEEPER77.postman_collection with requests should easily import to postman. Thank you!
