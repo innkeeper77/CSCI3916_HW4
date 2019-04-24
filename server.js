@@ -260,7 +260,7 @@ router.route('/reviews')
                         }
                         else
                         {
-                            review.movie = movie._id;
+                            review.movie = movie.title;
                             review.quote = req.body.quote;
                             review.rating = req.body.rating;
                             review.author_id = decoded.author_id;
