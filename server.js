@@ -268,7 +268,7 @@ router.route('/reviews')
                             {
                                 if(err)
                                 {
-                                    return res.status(403).json({success: false, message: "Error: dev doesn't know what went wrong"});
+                                    return res.status(403).json(err);
                                 }
                                 else
                                 {
