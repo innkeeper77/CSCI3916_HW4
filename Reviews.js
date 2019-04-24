@@ -1,4 +1,3 @@
-//Just copied and modified Movies.js
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
@@ -16,7 +15,7 @@ var ReviewSchema = new Schema({
     quote: { type: String },
 });
 
-MovieSchema.pre('save', function(next) {
+ReviewSchema.pre('save', function(next) {
     next(); // Still not sure exactly what this is
 });
 
