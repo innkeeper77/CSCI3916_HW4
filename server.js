@@ -249,39 +249,49 @@ router.route('/reviews')
                     user.findById(req.body.username, function(err, user)
                     {
                         review.author_id = user._id
-
-                    })
-
-
-                    Movie.findById(req.body.movie, function(err, movie)
-                    {
                         if(err)
                         {
                             return res.status(403).json(err);
                         }
-                        if (!movie)
+                        if (!user)
                         {
                             return res.status(403).json({success: false, message: "Error: movie not found"});
                         }
                         else
                         {
-                            review.movie = movie._id;
-                            review.quote = req.body.quote;
-                            review.rating = req.body.rating;
-
-                            review.save(function(err)
+                            Movie.findById(req.body.movie, function(err, movie)
                             {
                                 if(err)
                                 {
                                     return res.status(403).json(err);
                                 }
+                                if (!movie)
+                                {
+                                    return res.status(403).json({success: false, message: "Error: movie not found"});
+                                }
                                 else
                                 {
-                                    return res.status(200).send({success: true, message: "Review added"});
+                                    review.movie = movie._id;
+                                    review.quote = req.body.quote;
+                                    review.rating = req.body.rating;
+
+                                    review.save(function(err)
+                                    {
+                                        if(err)
+                                        {
+                                            return res.status(403).json(err);
+                                        }
+                                        else
+                                        {
+                                            return res.status(200).send({success: true, message: "Review added"});
+                                        }
+                                    })
                                 }
                             })
                         }
+
                     })
+
                 }
             })
         }
