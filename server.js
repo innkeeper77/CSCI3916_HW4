@@ -154,7 +154,7 @@ router.route('/movies')
         }
         else
         {
-            if (req.query || req.query.reviews === "false") //Regular movie get. Implemented parameter design with gavenos help.
+            if (req.query && (req.query.reviews === undefined || req.query.reviews === "false") ) //Regular movie get. Implemented parameter design with gavenos help.
             {
                 Movie.find(req.body).select("title year genre actor").exec(function (err, movie)
                 {
