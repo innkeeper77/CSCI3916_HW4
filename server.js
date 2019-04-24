@@ -8,7 +8,6 @@ var jwt = require('jsonwebtoken');
 var Review = require('./Reviews');
 var cors = require('cors');
 var mongoose = require('mongoose');
-const user = require("mongoose");
 
 var app = express();
 module.exports = app; // for testing
@@ -246,52 +245,49 @@ router.route('/reviews')
                 }
                 else
                 {
-                    user.findById(req.body.username, function(err, user)
+                    User.findByID(req.body.username, function(err, movie)
                     {
-                        review.author_id = user._id
                         if(err)
                         {
                             return res.status(403).json(err);
                         }
-                        if (!user)
+                        else if (!movie)
+                        {
+                            return res.status(403).json({success: false, message: "Error: movie not found"});
+                        }
+                        else review.author_id = User._id;
+                    });
+
+                    Movie.findById(req.body.movie, function(err, movie)
+                    {
+                        if(err)
+                        {
+                            return res.status(403).json(err);
+                        }
+                        if (!movie)
                         {
                             return res.status(403).json({success: false, message: "Error: movie not found"});
                         }
                         else
                         {
-                            Movie.findById(req.body.movie, function(err, movie)
+
+                            review.movie = movie._id;
+                            review.quote = req.body.quote;
+                            review.rating = req.body.rating;
+
+                            review.save(function(err)
                             {
                                 if(err)
                                 {
                                     return res.status(403).json(err);
                                 }
-                                if (!movie)
-                                {
-                                    return res.status(403).json({success: false, message: "Error: movie not found"});
-                                }
                                 else
                                 {
-                                    review.movie = movie._id;
-                                    review.quote = req.body.quote;
-                                    review.rating = req.body.rating;
-
-                                    review.save(function(err)
-                                    {
-                                        if(err)
-                                        {
-                                            return res.status(403).json(err);
-                                        }
-                                        else
-                                        {
-                                            return res.status(200).send({success: true, message: "Review added"});
-                                        }
-                                    })
+                                    return res.status(200).send({success: true, message: "Review added"});
                                 }
                             })
                         }
-
                     })
-
                 }
             })
         }
