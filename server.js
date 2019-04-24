@@ -245,32 +245,25 @@ router.route('/reviews')
                 }
                 else
                 {
-                    User.findByID(req.body.username, function(err, movie)
-                    {
-                        if(err)
-                        {
-                            return res.status(403).json(err);
-                        }
-                        else if (!movie)
-                        {
-                            return res.status(403).json({success: false, message: "Error: movie not found"});
-                        }
-                        else review.author_id = User._id;
-                    });
+                    review.user_id = decoded.id;
 
                     Movie.findById(req.body.movie, function(err, movie)
                     {
                         if(err)
                         {
-                            return res.status(403).json(err);
-                        }
+                            if (err.code === 11000)
+                            {
+                                return res.status(403).json(
+                                    {
+                                        success: false, message: "Cannot post multiple reviews of one movie"
+                                    });
+                            }
+                            else { return res.status(403).json(err); }
                         if (!movie)
                         {
                             return res.status(403).json({success: false, message: "Error: movie not found"});
                         }
                         else
-                        {
-
                             review.movie = movie._id;
                             review.quote = req.body.quote;
                             review.rating = req.body.rating;
@@ -287,7 +280,7 @@ router.route('/reviews')
                                 }
                             })
                         }
-                    })
+                    });
                 }
             })
         }
