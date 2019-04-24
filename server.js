@@ -154,7 +154,7 @@ router.route('/movies')
         }
         else
         {
-            if (req.query && !req.query.reviews || req.query.reviews === "false") //Regular movie get. Implemented parameter design with gavenos help.
+            if (req.query || req.query.reviews === "false") //Regular movie get. Implemented parameter design with gavenos help.
             {
                 Movie.find(req.body).select("title year genre actor").exec(function (err, movie)
                 {
@@ -169,7 +169,7 @@ router.route('/movies')
                     }
                 })
             }
-            else if (req.query && req.query.reviews || req.query.reviews === "true")
+            else if (req.query && req.query.reviews && req.query.reviews === "true")
             {
                 return res.status(405).json({success: false, message: "Movie get with reviews is not yet implemented", movie: movie});
             }
