@@ -6,13 +6,15 @@ var User = require('./Users');
 var Movie = require('./Movies');
 var jwt = require('jsonwebtoken');
 var Review = require('./Reviews');
+var cors = require('cors');
+var mongoose = require('mongoose');
 
 var app = express();
 module.exports = app; // for testing
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(passport.initialize());
+app.use(cors());
 
 var router = express.Router();
 
@@ -245,7 +247,7 @@ router.route('/reviews')
                 {
                     review.author_id = decoded.id;
 
-                    Movie.findOne({title: req.body.movie_title}, function(err, movie) //Copied and modified from user section
+                    Movie.findOne({title: req.body.movie}, function(err, movie) //Copied and modified from user section
                     {
                         if(err)
                         {
@@ -258,11 +260,11 @@ router.route('/reviews')
                         else
                         {
 
-                            review.quote = req.body.quote
-                            review.rating = req.body.rating
-                            review.author_id = decoded.author_id
+                            review.quote = req.body.quote;
+                            review.rating = req.body.rating;
+                            review.author_id = decoded.author_id;
                             // review.movie_id = req.body.movie_id //Nope, find it just like we did with the users
-                            review.movie = movie._id
+                            review.movie = movie._id;
 
                             review.save(function(err)
                             {
