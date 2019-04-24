@@ -287,7 +287,7 @@ router.route('/reviews')
                 }
             })
         }
-    })
+    });
 
 
 
