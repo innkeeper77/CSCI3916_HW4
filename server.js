@@ -247,8 +247,7 @@ router.route('/reviews')
                 {
                     review.author_id = decoded.id;
 
-                    var idMovie = req.body.movie_title;
-                    Movie.findById(idMovie, function(err, movie)
+                    Movie.findById(req.body.movie, function(err, movie)
                     {
                         if(err)
                         {
