@@ -223,10 +223,26 @@ router.route('/movies')
 router.route('/reviews')
     .post(authJwtController.isAuthenticated, function(req, res)
     {
-        if(!req.body.quote || !req.body.rating)
+        if(!req.body)
         {
-            return res.json({success: false, message: "Error: make sure all fields correctly filled/formatted." + JSON.stringify(req.body)});
+            return res.status(403).json({success: false, message: "Empty query"});
         }
+        else if(!req.body.quote)
+        {
+            return res.status(403).json({success: false, message: "Incomplete query 0"});
+        }
+        else if(!req.body.rating)
+        {
+            return res.status(403).json({success: false, message: "Incomplete query 1"});
+        }
+        else if(!req.body.quote || !req.body.rating)
+        {
+            return res.status(403).json({success: false, message: "Incomplete query 2"});
+        }
+        //else if (!req.body.movie_id|| req.body.movie_id === 0)
+        //{
+        //    return res.status(403).json({success: false, message: "Invalid movie_id"});
+        //}
         else
         {
             var review = new Review();
